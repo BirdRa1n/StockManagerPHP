@@ -13,21 +13,6 @@ CREATE TABLE usuarios (
     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Tabela de fornecedores
-CREATE TABLE fornecedores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    cnpj VARCHAR(18) UNIQUE,
-    telefone VARCHAR(20),
-    email VARCHAR(100),
-    endereco TEXT,
-    ativo BOOLEAN DEFAULT TRUE,
-    usuario_id INT NOT NULL,
-    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-);
-
 -- Tabela de categorias
 CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -45,7 +30,6 @@ CREATE TABLE produtos (
     descricao TEXT,
     codigo_barras VARCHAR(50) UNIQUE,
     categoria_id INT,
-    fornecedor_id INT,
     preco_custo DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     preco_venda DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     estoque_minimo INT DEFAULT 0,
@@ -55,7 +39,6 @@ CREATE TABLE produtos (
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL,
-    FOREIGN KEY (fornecedor_id) REFERENCES fornecedores(id) ON DELETE SET NULL,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
@@ -76,6 +59,5 @@ CREATE TABLE movimentacoes_estoque (
 -- Índices para melhor performance
 CREATE INDEX idx_produtos_usuario ON produtos(usuario_id);
 CREATE INDEX idx_produtos_categoria ON produtos(categoria_id);
-CREATE INDEX idx_produtos_fornecedor ON produtos(fornecedor_id);
 CREATE INDEX idx_movimentacoes_produto ON movimentacoes_estoque(produto_id);
 CREATE INDEX idx_movimentacoes_usuario ON movimentacoes_estoque(usuario_id);

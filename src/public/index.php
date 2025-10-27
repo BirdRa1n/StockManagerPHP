@@ -1,6 +1,7 @@
 <?php
 require_once '../app/auth.php';
 require_once '../app/layout.php';
+require_once '../app/Models/Usuario.php';
 
 if (isLoggedIn()) {
     header('Location: /dashboard');
@@ -10,12 +11,9 @@ if (isLoggedIn()) {
 $erro = '';
 if ($_POST) {
     if (isset($_POST['acao']) && $_POST['acao'] === 'registrar') {
-        $nome = $_POST['nome'];
-        $email = $_POST['email'];
-        $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+        $usuario = new Usuario($pdo);
         
-        $stmt = $pdo->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
-        if ($stmt->execute([$nome, $email, $senha])) {
+        if ($usuario->criar($_POST['nome'], $_POST['email'], $_POST['senha'])) {
             $erro = 'Usuário criado! Faça login.';
         } else {
             $erro = 'Erro ao criar usuário.';
