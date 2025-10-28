@@ -25,3 +25,7 @@ $router->post('/api/auth/login', function () use ($authController) {
 $router->post('/api/auth/logout', function () use ($authController) {
     $authController->logout();
 });
+
+$router->get('/api/auth/self', function () use ($authController) {
+    $authController->self();
+});

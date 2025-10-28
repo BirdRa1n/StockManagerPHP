@@ -30,4 +30,11 @@ class Usuario
         $stmt->execute([$email]);
         return $stmt->fetch();
     }
+
+    public function buscarPorId($id)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM usuarios WHERE id = ? AND ativo = 1");
+        $stmt->execute([$id]);
+        return $stmt->fetch();
+    }
 }
