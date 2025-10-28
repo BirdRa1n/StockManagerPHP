@@ -1,27 +1,28 @@
 <?php
-class MovimentacaoEstoque {
+class MovimentacaoEstoque
+{
     private $pdo;
-    
-    public function __construct($pdo) {
+
+    public function __construct($pdo)
+    {
         $this->pdo = $pdo;
     }
-    
-    public function registrar($produto_id, $tipo, $quantidade, $preco_unitario, $observacao, $usuario_id) {
+
+    public function registrar($produto_id, $tipo, $quantidade, $preco_unitario, $observacao, $usuario_id)
+    {
         $this->pdo->beginTransaction();
-        
+
         try {
-            // Registra movimentação
             $stmt = $this->pdo->prepare("
                 INSERT INTO movimentacoes_estoque (produto_id, tipo, quantidade, preco_unitario, observacao, usuario_id) 
                 VALUES (?, ?, ?, ?, ?, ?)
             ");
             $stmt->execute([$produto_id, $tipo, $quantidade, $preco_unitario, $observacao, $usuario_id]);
-            
-            // Atualiza estoque
+
             $operacao = $tipo === 'entrada' ? '+' : '-';
             $stmt = $this->pdo->prepare("UPDATE produtos SET estoque_atual = estoque_atual $operacao ? WHERE id = ?");
             $stmt->execute([$quantidade, $produto_id]);
-            
+
             $this->pdo->commit();
             return true;
         } catch (Exception $e) {
@@ -29,8 +30,9 @@ class MovimentacaoEstoque {
             return false;
         }
     }
-    
-    public function listar($usuario_id, $limite = 50) {
+
+    public function listar($usuario_id, $limite = 50)
+    {
         $stmt = $this->pdo->prepare("
             SELECT m.*, p.nome as produto_nome 
             FROM movimentacoes_estoque m 

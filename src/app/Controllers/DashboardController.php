@@ -2,8 +2,10 @@
 require_once __DIR__ . '/BaseController.php';
 require_once __DIR__ . '/../Models/Produto.php';
 
-class DashboardController extends BaseController {
-    public function index() {
+class DashboardController extends BaseController
+{
+    public function index()
+    {
         $produtoModel = new Produto($this->pdo);
         $produtos = $produtoModel->listar($_SESSION['usuario_id']);
         $totalProdutos = count($produtos);

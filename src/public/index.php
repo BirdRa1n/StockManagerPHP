@@ -2,19 +2,20 @@
 require_once '../app/auth.php';
 require_once '../config/database.php';
 
-$path = isset($_GET['route']) ? '/' . $_GET['route'] : parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Remove debug for now
-// Debug code removed
-
-// Always try router first
+// Handle routing
 if ($path !== '/') {
-    try {
-        $router = require_once 'routes.php';
-        $router->run();
-    } catch (Exception $e) {
-        echo "Router error: " . $e->getMessage();
-    }
+    $router = require_once 'routes.php';
+    $router->run();
+    exit;
+}
+
+// Handle query parameter routing for compatibility
+if (isset($_GET['route'])) {
+    $_SERVER['REQUEST_URI'] = '/' . $_GET['route'];
+    $router = require_once 'routes.php';
+    $router->run();
     exit;
 }
 
