@@ -2,31 +2,36 @@
 require_once __DIR__ . '/BaseController.php';
 require_once __DIR__ . '/../Models/Produto.php';
 
-class ProdutoController extends BaseController {
+class ProdutoController extends BaseController
+{
     private $produtoModel;
-    
-    public function __construct($pdo) {
+
+    public function __construct($pdo)
+    {
         parent::__construct($pdo);
         $this->produtoModel = new Produto($pdo);
     }
-    
-    public function index() {
-        $produtos = $this->produtoModel->listar($_SESSION['usuario_id']);
+
+    public function index()
+    {
+        $data = $this->produtoModel->listagemPaginada($_SESSION['usuario_id'], $_GET['busca'] ?? '', $_GET['itens_por_pagina'] ?? 5, $_GET['pagina'] ?? 0);
         $this->render('produtos/lista', [
             'title' => 'Produtos',
-            'produtos' => $produtos
+            'data' => $data
         ]);
     }
-    
-    public function create() {
+
+    public function create()
+    {
         $this->render('produtos/adicionar', ['title' => 'Adicionar Produto']);
     }
-    
-    public function store() {
+
+    public function store()
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/produtos');
         }
-        
+
         $dados = [
             'nome' => $_POST['nome'],
             'descricao' => $_POST['descricao'],
@@ -43,24 +48,26 @@ class ProdutoController extends BaseController {
             echo "Erro ao salvar o produto.";
         }
     }
-    
-    public function edit($id) {
+
+    public function edit($id)
+    {
         $produto = $this->produtoModel->buscarPorId($id, $_SESSION['usuario_id']);
         if (!$produto) {
             $this->redirect('/produtos');
         }
-        
+
         $this->render('produtos/editar', [
             'title' => 'Editar Produto',
             'produto' => $produto
         ]);
     }
-    
-    public function update($id) {
+
+    public function update($id)
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('/produtos');
         }
-        
+
         $dados = [
             'nome' => $_POST['nome'],
             'descricao' => $_POST['descricao'],
@@ -77,8 +84,9 @@ class ProdutoController extends BaseController {
             echo "Erro ao atualizar o produto.";
         }
     }
-    
-    public function delete($id) {
+
+    public function delete($id)
+    {
         if ($this->produtoModel->excluir($id, $_SESSION['usuario_id'])) {
             $this->redirect('/produtos');
         } else {
