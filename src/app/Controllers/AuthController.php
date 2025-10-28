@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/../Models/Usuario.php';
+
+namespace App\Models;
 
 class AuthController
 {
