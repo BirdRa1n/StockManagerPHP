@@ -36,19 +36,32 @@
             </tbody>
         </table>
 
-        <div class="mt-5">
-            <?php
-            $totalPaginas = ceil($data['total'] / ($_GET['itens_por_pagina'] ?? 5));
-            $paginaAtual = $_GET['pagina'] ?? 0;
+        <div class="flex justify-between w-full">
+            <div class="mt-5">
+                <?php
+                $totalPaginas = ceil($data['total'] / ($_GET['itens_por_pagina'] ?? 5));
+                $paginaAtual = $_GET['pagina'] ?? 0;
 
-            for ($i = 0; $i < $totalPaginas; $i++):
-                $ativo = $i == $paginaAtual ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700';
-            ?>
-                <a href="/produtos?pagina=<?= $i ?>&itens_por_pagina=<?= $_GET['itens_por_pagina'] ?? 5 ?>&busca=<?= urlencode($_GET['busca'] ?? '') ?>" class="px-3 py-1 rounded <?= $ativo ?> mx-1"><?= $i + 1 ?></a>
-            <?php endfor; ?>
+                for ($i = 0; $i < $totalPaginas; $i++):
+                    $ativo = $i == $paginaAtual ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700';
+                ?>
+                    <a href="/produtos?pagina=<?= $i ?>&itens_por_pagina=<?= $_GET['itens_por_pagina'] ?? 5 ?>&busca=<?= urlencode($_GET['busca'] ?? '') ?>" class="px-3 py-1 rounded <?= $ativo ?> mx-1"><?= $i + 1 ?></a>
+                <?php endfor; ?>
+
+            </div>
+
+            <div class="mt-5">
+                <label for="itensPorPagina" class="mr-2">Itens por página:</label>
+                <select id="itensPorPagina" onchange="window.location.href='/produtos?itens_por_pagina=' + this.value + '&busca=<?= urlencode($_GET['busca'] ?? '') ?>'">
+                    <?php foreach ([5, 10, 20, 50] as $opcao):
+                        $selecionado = ($opcao == ($_GET['itens_por_pagina'] ?? 5)) ? 'selected' : '';
+                    ?>
+                        <option value="<?= $opcao ?>" <?= $selecionado ?>><?= $opcao ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
         </div>
-    </div>
 </body>
 
 <script>
