@@ -17,10 +17,12 @@ class Router {
         $path = rtrim($path, '/');
         if (empty($path)) $path = '/';
         
+        // Check exact match first
         if (isset($this->routes[$method][$path])) {
             return $this->executeCallback($this->routes[$method][$path]);
         }
         
+        // Check pattern matches
         foreach ($this->routes[$method] ?? [] as $route => $callback) {
             if ($this->matchRoute($route, $path)) {
                 return $this->executeCallback($callback, $this->extractParams($route, $path));
@@ -28,7 +30,7 @@ class Router {
         }
         
         http_response_code(404);
-        echo "404 - Página não encontrada";
+        echo "404 - Página não encontrada: " . $path;
     }
     
     private function matchRoute($route, $path) {

@@ -6,18 +6,44 @@ require_once '../app/Controllers/ProdutoController.php';
 $router = new Router();
 
 // Dashboard routes
-$router->get('/dashboard', [new DashboardController($pdo), 'index']);
+$router->get('/dashboard', function() use ($pdo) {
+    $controller = new DashboardController($pdo);
+    return $controller->index();
+});
 
 // Product routes
-$router->get('/produtos', [new ProdutoController($pdo), 'index']);
-$router->get('/produtos/create', [new ProdutoController($pdo), 'create']);
-$router->post('/produtos/store', [new ProdutoController($pdo), 'store']);
-$router->get('/produtos/edit/{id}', [new ProdutoController($pdo), 'edit']);
-$router->post('/produtos/update/{id}', [new ProdutoController($pdo), 'update']);
-$router->get('/produtos/delete/{id}', [new ProdutoController($pdo), 'delete']);
+$router->get('/produtos', function() use ($pdo) {
+    $controller = new ProdutoController($pdo);
+    return $controller->index();
+});
+
+$router->get('/produtos/create', function() use ($pdo) {
+    $controller = new ProdutoController($pdo);
+    return $controller->create();
+});
+
+$router->post('/produtos/store', function() use ($pdo) {
+    $controller = new ProdutoController($pdo);
+    return $controller->store();
+});
+
+$router->get('/produtos/edit/{id}', function($id) use ($pdo) {
+    $controller = new ProdutoController($pdo);
+    return $controller->edit($id);
+});
+
+$router->post('/produtos/update/{id}', function($id) use ($pdo) {
+    $controller = new ProdutoController($pdo);
+    return $controller->update($id);
+});
+
+$router->get('/produtos/delete/{id}', function($id) use ($pdo) {
+    $controller = new ProdutoController($pdo);
+    return $controller->delete($id);
+});
 
 // Logout route
-$router->get('/logout', function() {
+$router->get('/logout', function () {
     require_once '../app/auth.php';
     logout();
 });
