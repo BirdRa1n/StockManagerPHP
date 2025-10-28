@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\Api\AuthController;
+use App\Controllers\Api\ProdutosController;
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
@@ -26,6 +27,9 @@ $router->post('/api/auth/logout', function () use ($authController) {
     $authController->logout();
 });
 
-$router->get('/api/auth/self', function () use ($authController) {
-    $authController->self();
+// Produtos API
+$produtosController = new ProdutosController($pdo);
+
+$router->get('/api/produtos', function () use ($produtosController) {
+    $produtosController->listar();
 });

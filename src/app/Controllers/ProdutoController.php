@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/BaseController.php';
-require_once __DIR__ . '/../Models/Produto.php';
+
+use App\Models\Produto;
 
 class ProdutoController extends BaseController
 {
