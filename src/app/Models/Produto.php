@@ -72,7 +72,7 @@ class Produto
     public function listagemPaginada(int $usuarioId, string $busca = '', int $limit = 10, int $offset = 0): array
     {
         $params = ['usuario_id' => $usuarioId];
-        $where = "WHERE usuario_id = :usuario_id";
+        $where = "WHERE usuario_id = :usuario_id AND ativo = 1";
 
         if ($busca !== '') {
             $where .= " AND (nome LIKE :busca OR descricao LIKE :busca)";
