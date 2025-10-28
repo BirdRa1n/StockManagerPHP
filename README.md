@@ -46,33 +46,38 @@ docker-compose up -d
 2. Configure MySQL e importe `init.sql`
 3. Configure `.env` com dados do banco
 
-## Estrutura do Projeto
+## Estrutura do Projeto (MVC)
 
 ```
 src/
 ├── app/
+│   ├── Controllers/     # Controladores (ProdutoController, DashboardController)
 │   ├── Models/          # Classes de modelo (Produto, Usuario)
 │   ├── Views/           # Templates de visualização
+│   │   ├── produtos/    # Views de produtos
+│   │   ├── dashboard/   # Views do dashboard
+│   │   └── auth/        # Views de autenticação
+│   ├── Router.php       # Sistema de roteamento
 │   ├── auth.php         # Sistema de autenticação
 │   └── layout.php       # Layout base
 ├── config/
 │   └── database.php     # Configuração do banco
 └── public/              # Arquivos públicos
-    ├── produtos/        # CRUD de produtos
-    ├── dashboard.php    # Dashboard principal
-    └── index.php        # Página de login
+    ├── routes.php       # Definição das rotas
+    ├── .htaccess        # Configuração de URLs amigáveis
+    └── index.php        # Ponto de entrada da aplicação
 ```
 
 ## Uso
 
 ### Dashboard
-- Acesse `/dashboard.php` após login
+- Acesse `/dashboard` após login
 - Visualize total de produtos, estoque baixo e valor total
 
 ### Produtos
-- **Adicionar**: `/produtos/adicionar.php`
-- **Listar**: `/produtos/lista.php`
-- **Editar**: `/produtos/editar.php?id=X`
+- **Adicionar**: `/produtos/create`
+- **Listar**: `/produtos`
+- **Editar**: `/produtos/edit/{id}`
 
 ### Formato de Preços
 - Use vírgula como separador decimal: `12,55`
@@ -98,8 +103,9 @@ src/
 
 ### Adicionando Novas Funcionalidades
 1. Crie o modelo em `app/Models/`
-2. Adicione as rotas em `public/`
-3. Use `auth.php` para controle de acesso
+2. Crie o controlador em `app/Controllers/`
+3. Adicione as views em `app/Views/`
+4. Configure as rotas em `public/routes.php`
 
 ### Padrões do Código
 - Use `requireLogin()` em páginas protegidas

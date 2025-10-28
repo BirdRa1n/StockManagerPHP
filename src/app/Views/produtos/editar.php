@@ -1,33 +1,6 @@
-<?php
-require_once '../../config/database.php';
-require_once '../../app/auth.php';
-require_once '../../app/Models/Produto.php';
-require_once '../../app/layout.php';
-
-requireLogin();
-
-$id = $_GET['id'] ?? null;
-if (!$id) {
-    header('Location: /produtos/lista.php');
-    exit;
-}
-
-$produtoModel = new Produto($pdo);
-$produto = $produtoModel->buscarPorId($id, $_SESSION['usuario_id']);
-
-if (!$produto) {
-    header('Location: /produtos/lista.php');
-    exit;
-}
-
-renderHead('Editar Produto');
-?>
-
 <body class="bg-gray-100 min-h-screen">
-    <form method="POST" action="atualizar.php" class="max-w-lg mx-auto bg-white p-6 rounded shadow-md mt-10">
+    <form method="POST" action="/produtos/update/<?= $produto['id'] ?>" class="max-w-lg mx-auto bg-white p-6 rounded shadow-md mt-10">
         <h2 class="text-2xl font-bold mb-4">Editar Produto</h2>
-        
-        <input type="hidden" name="id" value="<?= $produto['id'] ?>">
         
         <div class="mb-4">
             <label class="block text-gray-700 mb-2" for="nome">Nome</label>
@@ -69,6 +42,6 @@ renderHead('Editar Produto');
         </div>
         
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Atualizar</button>
-        <a href="/produtos/lista.php" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancelar</a>
+        <a href="/produtos" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancelar</a>
     </form>
 </body>

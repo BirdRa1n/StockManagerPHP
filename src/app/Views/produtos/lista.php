@@ -1,27 +1,11 @@
-<?php
-require_once '../../config/database.php';
-require_once '../../app/auth.php';
-require_once '../../app/Models/Produto.php';
-require_once '../../app/layout.php';
-
-requireLogin();
-renderHead('Produtos');
-?>
-
 <body class="bg-gray-100 min-h-screen">
-
     <div class="max-w-7xl mx-auto p-6">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold">Lista de Produtos</h1>
-            <a href="/produtos/adicionar" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <a href="produtos/create.php" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                 Adicionar Produto
             </a>
         </div>
-        
-        <?php
-        $produtoModel = new Produto($pdo);
-        $produtos = $produtoModel->listar($_SESSION['usuario_id']);
-        ?>
         
         <table class="w-full bg-white shadow-md rounded">
             <thead>
@@ -41,8 +25,8 @@ renderHead('Produtos');
                         <td class="p-3 border-b">R$ <?= number_format($produto['preco_venda'], 2, ',', '.') ?></td>
                         <td class="p-3 border-b"><?= htmlspecialchars($produto['estoque_atual']) ?></td>
                         <td class="p-3 border-b">
-                            <a href="/produtos/editar?id=<?= $produto['id'] ?>" class="text-blue-600 hover:text-blue-800">Editar</a>
-                            <a href="/produtos/excluir?id=<?= $produto['id'] ?>" class="text-red-600 hover:text-red-800 ml-2">Excluir</a>
+                            <a href="/produtos/edit/<?= $produto['id'] ?>" class="text-blue-600 hover:text-blue-800">Editar</a>
+                            <a href="/produtos/delete/<?= $produto['id'] ?>" class="text-red-600 hover:text-red-800 ml-2">Excluir</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

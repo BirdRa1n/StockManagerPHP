@@ -9,7 +9,3 @@ function renderHead($title = 'StockManager') {
     <script src=\"https://cdn.tailwindcss.com\"></script>
 </head>";
 }
-
-function renderFooter() {
-    echo "</body></html>";
-}
